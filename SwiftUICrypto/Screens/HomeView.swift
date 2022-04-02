@@ -1,5 +1,5 @@
 //
-//  MainView.swift
+//  HomeView.swift
 //  SwiftUICrypto
 //
 //  Created by Gabor Sornyei on 2022. 04. 02..
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MainView: View {
+struct HomeView: View {
     @State var showPortfolio: Bool = false
     var body: some View {
         ZStack {
@@ -24,11 +24,11 @@ struct MainView: View {
 
 
 
-struct MainView_Previews: PreviewProvider {
+struct Previews_HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
+        HomeView()
         
-        MainView()
+        HomeView()
             .preferredColorScheme(.dark)
     }
 }
