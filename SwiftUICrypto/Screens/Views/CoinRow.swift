@@ -30,18 +30,20 @@ struct CoinRow: View {
                 VStack(alignment: .trailing) {
                     Text("\(coin.currentHoldingsValue.currencyFormatted(digits: 2))")
                         .bold()
+                        .foregroundColor(.accentColor)
                     Text("\((coin.currentHoldings ?? 0).formatted(digits: 2))")
                 }
             }
             VStack(alignment: .trailing) {
                 Text("\(coin.currentPrice.currencyFormatted(digits: 6))")
                     .bold()
+                    .foregroundColor(.accentColor)
                 Text("\((coin.priceChangePercentage24H ?? 0).percentageFormatted)")
                     .foregroundColor((coin.priceChangePercentage24H ?? 0) >= 0 ? Color.Theme.green : Color.Theme.red)
             }
             .frame(minWidth: UIScreen.main.bounds.width/3.5, alignment: .trailing)
         }
-        .font(.subheadline)
+        .font(.subheadline)        
     }
 }
 
