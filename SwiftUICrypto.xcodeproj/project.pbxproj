@@ -23,6 +23,7 @@
 		2189611527F88F3A00067213 /* CoinList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189611427F88F3A00067213 /* CoinList.swift */; };
 		2189611727F88FA800067213 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189611627F88FA800067213 /* HomeViewModel.swift */; };
 		2189611A27F8ADBB00067213 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189611927F8ADBB00067213 /* NetworkService.swift */; };
+		2189611C27FAC83800067213 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189611B27FAC83800067213 /* SearchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		2189611427F88F3A00067213 /* CoinList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinList.swift; sourceTree = "<group>"; };
 		2189611627F88FA800067213 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		2189611927F8ADBB00067213 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		2189611B27FAC83800067213 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				218960FF27F83FA000067213 /* Header.swift */,
 				2189610127F8407600067213 /* CircleButton.swift */,
 				2189610727F8443900067213 /* RippleEffect.swift */,
+				2189611B27FAC83800067213 /* SearchBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				2189611227F87E1C00067213 /* CoinRow.swift in Sources */,
 				2189610027F83FA000067213 /* Header.swift in Sources */,
 				2189610827F8443900067213 /* RippleEffect.swift in Sources */,
+				2189611C27FAC83800067213 /* SearchBar.swift in Sources */,
 				2189611727F88FA800067213 /* HomeViewModel.swift in Sources */,
 				2189610B27F8522D00067213 /* CoinModel.swift in Sources */,
 				218960F127F829E400067213 /* ContentView.swift in Sources */,
