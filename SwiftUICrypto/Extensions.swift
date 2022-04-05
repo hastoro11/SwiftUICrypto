@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// MARK: - Color
 extension Color {
     struct Theme {
         static var background: Color {
@@ -25,6 +26,7 @@ extension Color {
     }
 }
 
+// MARK: - Double
 extension Double {
     var percentageFormatted: String {
         let formatter = NumberFormatter()
@@ -46,6 +48,39 @@ extension Double {
         formatter.maximumFractionDigits = digits
         formatter.minimumFractionDigits = digits
         return formatter.string(from: NSNumber(value: self)) ?? "0.00 !"
+    }
+    
+    func asNumberString() -> String {
+        return String(format: "%.2f", self)
+    }
+    
+    func formattedWithAbbreviations() -> String {
+        let num = abs(Double(self))
+        let sign = (self < 0) ? "-" : ""
+
+        switch num {
+        case 1_000_000_000_000...:
+            let formatted = num / 1_000_000_000_000
+            let stringFormatted = formatted.asNumberString()
+            return "\(sign)\(stringFormatted)Tr"
+        case 1_000_000_000...:
+            let formatted = num / 1_000_000_000
+            let stringFormatted = formatted.asNumberString()
+            return "\(sign)\(stringFormatted)Bn"
+        case 1_000_000...:
+            let formatted = num / 1_000_000
+            let stringFormatted = formatted.asNumberString()
+            return "\(sign)\(stringFormatted)M"
+        case 1_000...:
+            let formatted = num / 1_000
+            let stringFormatted = formatted.asNumberString()
+            return "\(sign)\(stringFormatted)K"
+        case 0...:
+            return self.asNumberString()
+
+        default:
+            return "\(sign)\(self)"
+        }
     }
 }
 

@@ -20,6 +20,10 @@ struct HomeView: View {
                 Header(showPortfolio: $showPortfolio)
                     .padding(.horizontal)
                 
+                StatisticRow(stats: homeVM.stats, showPortfolio: $showPortfolio)
+                    .frame(minHeight: 50)
+                    .showProgress($homeVM.isMarketDataLoading)
+                
                 SearchBar(text: $search)
                     .padding()
                 
@@ -43,11 +47,13 @@ struct HomeView: View {
                 if !showPortfolio {
                     CoinList(coins: filteredCoins, showPortfolio: false)
                         .transition(.move(edge: .leading))
+                        .showProgress($homeVM.isCoinDataLoading)
                 }
             }
         }
         .task {
             await homeVM.fetchCoins()
+            await homeVM.fetchMarketData()
         }
     }
     
