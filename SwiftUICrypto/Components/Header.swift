@@ -9,10 +9,15 @@ import SwiftUI
 
 struct Header: View {
     @Binding var showPortfolio: Bool
+    @Binding var showPortfolioEdit: Bool
     var body: some View {
         ZStack {
             HStack {
-                CircleButton(icon: showPortfolio ? "plus" : "info", action: {})
+                CircleButton(icon: showPortfolio ? "plus" : "info", action: {
+                    if showPortfolio {
+                        showPortfolioEdit.toggle()
+                    }
+                })
                     .animation(.none, value: showPortfolio)                    
                     .background {
                         RippleEffect(animate: $showPortfolio)
@@ -39,11 +44,11 @@ struct Header: View {
 
 struct Header_Previews: PreviewProvider {
     static var previews: some View {
-        Header(showPortfolio: .constant(false))
+        Header(showPortfolio: .constant(false), showPortfolioEdit: .constant(false))
             .padding()
             .previewLayout(.sizeThatFits)
         
-        Header(showPortfolio: .constant(false))
+        Header(showPortfolio: .constant(false), showPortfolioEdit: .constant(false))
             .padding()
             .previewLayout(.sizeThatFits)
             .preferredColorScheme(.dark)

@@ -8,7 +8,11 @@
 import SwiftUI
 
 @main
-struct SwiftUICryptoApp: App {    
+struct SwiftUICryptoApp: App {
+    init() {
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color.accentColor)]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(Color.accentColor)]
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var homeVM: HomeViewModel
     @State var showPortfolio: Bool = false
+    @State var showPortfolioEdit: Bool = false
     @State var search: String = ""
     
     var body: some View {
@@ -17,7 +18,7 @@ struct HomeView: View {
             Color.Theme.background
                 .ignoresSafeArea()
             VStack {
-                Header(showPortfolio: $showPortfolio)
+                Header(showPortfolio: $showPortfolio, showPortfolioEdit: $showPortfolioEdit)
                     .padding(.horizontal)
                 
                 StatisticRow(stats: homeVM.stats, showPortfolio: $showPortfolio)
@@ -51,6 +52,9 @@ struct HomeView: View {
                 }
             }
         }
+        .sheet(isPresented: $showPortfolioEdit, content: {
+            Portfolio()
+        })
         .task {
             await homeVM.fetchCoins()
             await homeVM.fetchMarketData()

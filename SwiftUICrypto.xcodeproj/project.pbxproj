@@ -13,6 +13,8 @@
 		2143C0E027FC95EF00942F00 /* MarketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2143C0DF27FC95EF00942F00 /* MarketData.swift */; };
 		2143C0E227FC964000942F00 /* marketdata.json in Resources */ = {isa = PBXBuildFile; fileRef = 2143C0E127FC964000942F00 /* marketdata.json */; };
 		2143C0E427FC9B4700942F00 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2143C0E327FC9B4700942F00 /* ViewModifiers.swift */; };
+		21702E8027FDF155007A8D3A /* Portfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21702E7F27FDF155007A8D3A /* Portfolio.swift */; };
+		21702E8227FDF1FD007A8D3A /* XMarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21702E8127FDF1FD007A8D3A /* XMarkButton.swift */; };
 		218960EF27F829E400067213 /* SwiftUICryptoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218960EE27F829E400067213 /* SwiftUICryptoApp.swift */; };
 		218960F127F829E400067213 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218960F027F829E400067213 /* ContentView.swift */; };
 		218960F627F829E500067213 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 218960F527F829E500067213 /* Preview Assets.xcassets */; };
@@ -39,6 +41,8 @@
 		2143C0DF27FC95EF00942F00 /* MarketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketData.swift; sourceTree = "<group>"; };
 		2143C0E127FC964000942F00 /* marketdata.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = marketdata.json; sourceTree = "<group>"; };
 		2143C0E327FC9B4700942F00 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
+		21702E7F27FDF155007A8D3A /* Portfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Portfolio.swift; sourceTree = "<group>"; };
+		21702E8127FDF1FD007A8D3A /* XMarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkButton.swift; sourceTree = "<group>"; };
 		218960EB27F829E400067213 /* SwiftUICrypto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUICrypto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		218960EE27F829E400067213 /* SwiftUICryptoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUICryptoApp.swift; sourceTree = "<group>"; };
 		218960F027F829E400067213 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -118,6 +122,7 @@
 				2189610127F8407600067213 /* CircleButton.swift */,
 				2189610727F8443900067213 /* RippleEffect.swift */,
 				2143C0E327FC9B4700942F00 /* ViewModifiers.swift */,
+				21702E8127FDF1FD007A8D3A /* XMarkButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -152,6 +157,7 @@
 				2143C0DD27FC62B600942F00 /* StatisticRow.swift */,
 				2189611127F87E1C00067213 /* CoinRow.swift */,
 				2189611427F88F3A00067213 /* CoinList.swift */,
+				21702E7F27FDF155007A8D3A /* Portfolio.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -240,6 +246,7 @@
 				2189610F27F87CE400067213 /* TestData.swift in Sources */,
 				2189610227F8407600067213 /* CircleButton.swift in Sources */,
 				2143C0E427FC9B4700942F00 /* ViewModifiers.swift in Sources */,
+				21702E8027FDF155007A8D3A /* Portfolio.swift in Sources */,
 				2189610627F8417C00067213 /* Extensions.swift in Sources */,
 				2143C0DA27FC5F0800942F00 /* Statistic.swift in Sources */,
 				2189611527F88F3A00067213 /* CoinList.swift in Sources */,
@@ -252,6 +259,7 @@
 				2189610B27F8522D00067213 /* CoinModel.swift in Sources */,
 				218960F127F829E400067213 /* ContentView.swift in Sources */,
 				218960FD27F83F7300067213 /* HomeView.swift in Sources */,
+				21702E8227FDF1FD007A8D3A /* XMarkButton.swift in Sources */,
 				2189611A27F8ADBB00067213 /* NetworkService.swift in Sources */,
 				218960EF27F829E400067213 /* SwiftUICryptoApp.swift in Sources */,
 				2143C0E027FC95EF00942F00 /* MarketData.swift in Sources */,
