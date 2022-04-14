@@ -14,8 +14,12 @@ class HomeViewModel: ObservableObject {
     
     @Published var isMarketDataLoading: Bool = false
     @Published var isCoinDataLoading: Bool = false
-    init() {
-        portfolioCoins = [TestData.coin(0), TestData.coin(3), TestData.coin(5)]
+    
+    var dataService: PortfolioDataService = PortfolioDataService()
+
+    func update(coin: Coin, amount: Double) {
+        dataService.updatePortfolio(coin: coin, amount: amount)
+        fetchPortfolioCoins()
     }
 
     @MainActor
@@ -40,6 +44,25 @@ class HomeViewModel: ObservableObject {
         } catch {
             print(error)
         }
+    }
+    
+    func fetchPortfolioCoins(){
+        let entities = dataService.fetchPortfolio()
+        let portfolios = allCoins.compactMap { coin -> Coin? in
+            if let entity = entities.first(where: {$0.coinID == coin.id}) {
+                return coin.updateHoldings(amount: entity.amount)
+            }
+            return nil
+        }
+        portfolioCoins = portfolios
+    }
+    
+    func fetchAmountFor(_ coin: Coin) -> Double {
+        let entities = dataService.fetchPortfolio()
+        if let entity = entities.first(where: {$0.coinID == coin.id }) {
+            return entity.amount
+        }
+        return 0
     }
 }
 

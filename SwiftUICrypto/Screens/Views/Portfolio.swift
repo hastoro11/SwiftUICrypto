@@ -20,7 +20,7 @@ struct Portfolio: View {
                 SearchBar(text: $search)
                     .padding()
                 
-                CoinScroll(coins: filterCoins(), selectedCoin: $selectedCoin)
+                CoinScroll(coins: filterCoins(), selectedCoin: $selectedCoin, quantityOfHoldingString: $quantityOfHoldingString)
                     .frame(minHeight: 75)
                     .showProgress($homeVM.isCoinDataLoading)
                 if selectedCoin != nil {
@@ -65,7 +65,7 @@ struct Portfolio: View {
                             Text("SAVE")
                         }
                         .disabled(
-                            (selectedCoin?.currentHoldingsValue ?? 0) == (Double(quantityOfHoldingString) ?? 0)
+                            quantityOfHoldingString.isEmpty
                         )
                     }
                     .font(.title3.bold())
@@ -83,8 +83,15 @@ struct Portfolio: View {
     func save() {
         saved = true
         search = ""
+        guard let amount = Double(quantityOfHoldingString),
+        let coin = selectedCoin else {
+            dismiss()
+            return
+        }
+        homeVM.update(coin: coin, amount: amount)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             saved = false
+            dismiss()
         }
     }
     
@@ -109,8 +116,10 @@ struct Portfolio: View {
 
 extension Portfolio {
     struct CoinScroll: View {
+        @EnvironmentObject var homeVM: HomeViewModel
         var coins: [Coin]
         @Binding var selectedCoin: Coin?
+        @Binding var quantityOfHoldingString: String
         var body: some View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
@@ -118,6 +127,7 @@ extension Portfolio {
                         Portfolio.PortfolioCoin(coin: coin, selected: selectedCoin?.id == coin.id)
                             .onTapGesture {
                                 selectedCoin = coin
+                                quantityOfHoldingString = String(homeVM.fetchAmountFor(coin))
                             }
                     }
                 }

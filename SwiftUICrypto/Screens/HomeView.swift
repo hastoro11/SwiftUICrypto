@@ -58,6 +58,7 @@ struct HomeView: View {
         .task {
             await homeVM.fetchCoins()
             await homeVM.fetchMarketData()
+            homeVM.fetchPortfolioCoins()
         }
     }
     
