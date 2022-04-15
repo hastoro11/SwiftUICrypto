@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var homeVM: HomeViewModel
+    @EnvironmentObject var stateController: StateController
     @State var showPortfolio: Bool = false
     @State var showPortfolioEdit: Bool = false
     @State var search: String = ""
     
+    @StateObject var coinListVM = CoinListViewModel()
+    @StateObject var marketDataVM = MarketDataViewModel()
+    @State var isError = false
     var body: some View {
         ZStack {
             Color.Theme.background
@@ -21,9 +24,16 @@ struct HomeView: View {
                 Header(showPortfolio: $showPortfolio, showPortfolioEdit: $showPortfolioEdit)
                     .padding(.horizontal)
                 
-                StatisticRow(stats: homeVM.stats, showPortfolio: $showPortfolio)
+                StatisticRow(stats: stateController.stats, showPortfolio: $showPortfolio)
                     .frame(minHeight: 50)
-                    .showProgress($homeVM.isMarketDataLoading)
+                    .loading(marketDataVM.isLoading)
+                    .task {
+                        guard let stats = await marketDataVM.fetchMarketData() else {
+                            isError = true
+                            return
+                        }
+                        stateController.stats = stats
+                    }
                 
                 SearchBar(text: $search)
                     .padding()
@@ -42,31 +52,42 @@ struct HomeView: View {
                 .padding(.horizontal)
                 
                 if showPortfolio {
-                    CoinList(coins: homeVM.portfolioCoins, showPortfolio: true)
+                    CoinList(coins: stateController.portfolioCoins, showPortfolio: true)
                         .transition(.move(edge: .trailing))
+                        .task {
+                            print("in task")
+                            stateController.fetchPortfolioCoins()
+                        }
                 }
                 if !showPortfolio {
                     CoinList(coins: filteredCoins, showPortfolio: false)
                         .transition(.move(edge: .leading))
-                        .showProgress($homeVM.isCoinDataLoading)
+                        .loading(coinListVM.isLoading)
+                        .task {
+                            guard let coins = await coinListVM.fetchCoins() else {
+                                isError = true
+                                return
+                            }
+                            stateController.allCoins = coins
+                        }
                 }
             }
         }
         .sheet(isPresented: $showPortfolioEdit, content: {
             Portfolio()
         })
-        .task {
-            await homeVM.fetchCoins()
-            await homeVM.fetchMarketData()
-            homeVM.fetchPortfolioCoins()
+        .alert("Error", isPresented: $isError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("An error happenned, try again later")
         }
     }
     
     var filteredCoins: [Coin] {
         if search.isEmpty {
-            return homeVM.allCoins
+            return stateController.allCoins
         } else {
-            return homeVM.allCoins.filter {
+            return stateController.allCoins.filter {
                 $0.name.lowercased().contains(search.lowercased()) ||
                 $0.id.lowercased().contains(search.lowercased()) ||
                 $0.symbol.lowercased().contains(search.lowercased())
@@ -80,9 +101,9 @@ struct HomeView: View {
 struct Previews_HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
-            .environmentObject(HomeViewModel())
+            .environmentObject(StateController())
         HomeView()
-            .environmentObject(HomeViewModel())
+            .environmentObject(StateController())
             .preferredColorScheme(.dark)
     }
 }

@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct Portfolio: View {
-    @EnvironmentObject var homeVM: HomeViewModel
+    @EnvironmentObject var stateController: StateController
     @Environment(\.dismiss) var dismiss
     @State var search: String = ""
     @State var selectedCoin: Coin?
     @State var quantityOfHoldingString: String = ""
     @State var saved: Bool = false
+    
+    @StateObject var coinListVM = CoinListViewModel()
+    @State var isError = false
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -22,7 +26,7 @@ struct Portfolio: View {
                 
                 CoinScroll(coins: filterCoins(), selectedCoin: $selectedCoin, quantityOfHoldingString: $quantityOfHoldingString)
                     .frame(minHeight: 75)
-                    .showProgress($homeVM.isCoinDataLoading)
+                    .loading(coinListVM.isLoading)
                 if selectedCoin != nil {
                     VStack(spacing: 20) {
                         HStack {
@@ -75,7 +79,11 @@ struct Portfolio: View {
             
         }
         .task {
-            await homeVM.fetchCoins()
+            guard let coins = await coinListVM.fetchCoins() else {
+                isError = true
+                return
+            }
+            stateController.allCoins = coins
         }
         
     }
@@ -88,7 +96,7 @@ struct Portfolio: View {
             dismiss()
             return
         }
-        homeVM.update(coin: coin, amount: amount)
+        stateController.update(coin: coin, amount: amount)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             saved = false
             dismiss()
@@ -97,9 +105,9 @@ struct Portfolio: View {
     
     func filterCoins() -> [Coin] {
         if search.isEmpty {
-            return homeVM.allCoins
+            return stateController.allCoins
         } else {
-            return homeVM.allCoins.filter { coin in
+            return stateController.allCoins.filter { coin in
                 coin.symbol.lowercased().contains(search.lowercased()) ||
                 coin.name.lowercased().contains(search.lowercased())
             }
@@ -116,7 +124,7 @@ struct Portfolio: View {
 
 extension Portfolio {
     struct CoinScroll: View {
-        @EnvironmentObject var homeVM: HomeViewModel
+        @EnvironmentObject var stateController: StateController
         var coins: [Coin]
         @Binding var selectedCoin: Coin?
         @Binding var quantityOfHoldingString: String
@@ -127,7 +135,7 @@ extension Portfolio {
                         Portfolio.PortfolioCoin(coin: coin, selected: selectedCoin?.id == coin.id)
                             .onTapGesture {
                                 selectedCoin = coin
-                                quantityOfHoldingString = String(homeVM.fetchAmountFor(coin))
+                                quantityOfHoldingString = String(stateController.fetchAmountFor(coin))
                             }
                     }
                 }
@@ -172,7 +180,7 @@ extension Portfolio {
 struct Portfolio_Previews: PreviewProvider {
     static var previews: some View {
         Portfolio()
-            .environmentObject(HomeViewModel())
+            .environmentObject(StateController())
         
         Group {
             Portfolio.PortfolioCoin(coin: TestData.coin(0), selected: false)
