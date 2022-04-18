@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2115B5D32805493C0003C6DC /* PortfolioModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2115B5D12805493C0003C6DC /* PortfolioModel.xcdatamodeld */; };
 		2115B5D52805498E0003C6DC /* PortfolioDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2115B5D42805498E0003C6DC /* PortfolioDataService.swift */; };
-		2115B5DD28095F0C0003C6DC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2115B5DC28095F0C0003C6DC /* HomeViewModel.swift */; };
 		2115B5E02809DC860003C6DC /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2115B5DF2809DC860003C6DC /* View+Extension.swift */; };
 		2143C0DA27FC5F0800942F00 /* Statistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2143C0D927FC5F0800942F00 /* Statistic.swift */; };
 		2143C0DC27FC5F4500942F00 /* StatisticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2143C0DB27FC5F4500942F00 /* StatisticCell.swift */; };
@@ -41,7 +40,6 @@
 /* Begin PBXFileReference section */
 		2115B5D22805493C0003C6DC /* PortfolioModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PortfolioModel.xcdatamodel; sourceTree = "<group>"; };
 		2115B5D42805498E0003C6DC /* PortfolioDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioDataService.swift; sourceTree = "<group>"; };
-		2115B5DC28095F0C0003C6DC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		2115B5DF2809DC860003C6DC /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		2143C0D927FC5F0800942F00 /* Statistic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statistic.swift; sourceTree = "<group>"; };
 		2143C0DB27FC5F4500942F00 /* StatisticCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticCell.swift; sourceTree = "<group>"; };
@@ -163,7 +161,6 @@
 				2189611327F88F2A00067213 /* Views */,
 				218960FC27F83F7300067213 /* HomeView.swift */,
 				2189611627F88FA800067213 /* StateController.swift */,
-				2115B5DC28095F0C0003C6DC /* HomeViewModel.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -284,7 +281,6 @@
 				218960FD27F83F7300067213 /* HomeView.swift in Sources */,
 				21702E8227FDF1FD007A8D3A /* XMarkButton.swift in Sources */,
 				2189611A27F8ADBB00067213 /* NetworkService.swift in Sources */,
-				2115B5DD28095F0C0003C6DC /* HomeViewModel.swift in Sources */,
 				218960EF27F829E400067213 /* SwiftUICryptoApp.swift in Sources */,
 				2143C0E027FC95EF00942F00 /* MarketData.swift in Sources */,
 			);

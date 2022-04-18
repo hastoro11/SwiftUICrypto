@@ -9,13 +9,13 @@ import SwiftUI
 
 struct Portfolio: View {
     @EnvironmentObject var stateController: StateController
+    
     @Environment(\.dismiss) var dismiss
     @State var search: String = ""
     @State var selectedCoin: Coin?
     @State var quantityOfHoldingString: String = ""
     @State var saved: Bool = false
     
-    @StateObject var coinListVM = CoinListViewModel()
     @State var isError = false
     
     var body: some View {
@@ -26,7 +26,6 @@ struct Portfolio: View {
                 
                 CoinScroll(coins: filterCoins(), selectedCoin: $selectedCoin, quantityOfHoldingString: $quantityOfHoldingString)
                     .frame(minHeight: 75)
-                    .loading(coinListVM.isLoading)
                 if selectedCoin != nil {
                     VStack(spacing: 20) {
                         HStack {
@@ -77,15 +76,7 @@ struct Portfolio: View {
                 
             }
             
-        }
-        .task {
-            guard let coins = await coinListVM.fetchCoins() else {
-                isError = true
-                return
-            }
-            stateController.allCoins = coins
-        }
-        
+        }        
     }
     
     func save() {
@@ -97,6 +88,9 @@ struct Portfolio: View {
             return
         }
         stateController.update(coin: coin, amount: amount)
+        Task {
+            await stateController.fetch()
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             saved = false
             dismiss()

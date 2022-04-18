@@ -27,7 +27,7 @@ extension Statistic {
         stats.append(marketCap)
         stats.append(total24hVolume)
         stats.append(btcDominance)
-        stats.append(Statistic(title: "Portfolio Volume", value: "$0.00"))
+//        stats.append(Statistic(title: "Portfolio Volume", value: "$0.00"))
         
         return stats
     }

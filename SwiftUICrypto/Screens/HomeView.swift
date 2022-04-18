@@ -13,8 +13,6 @@ struct HomeView: View {
     @State var showPortfolioEdit: Bool = false
     @State var search: String = ""
     
-    @StateObject var coinListVM = CoinListViewModel()
-    @StateObject var marketDataVM = MarketDataViewModel()
     @State var isError = false
     var body: some View {
         ZStack {
@@ -26,14 +24,7 @@ struct HomeView: View {
                 
                 StatisticRow(stats: stateController.stats, showPortfolio: $showPortfolio)
                     .frame(minHeight: 50)
-                    .loading(marketDataVM.isLoading)
-                    .task {
-                        guard let stats = await marketDataVM.fetchMarketData() else {
-                            isError = true
-                            return
-                        }
-                        stateController.stats = stats
-                    }
+                    .loading(stateController.isLoading)
                 
                 SearchBar(text: $search)
                     .padding()
@@ -56,20 +47,14 @@ struct HomeView: View {
                         .transition(.move(edge: .trailing))
                         .task {
                             print("in task")
+                            await stateController.fetch()
                             stateController.fetchPortfolioCoins()
                         }
                 }
                 if !showPortfolio {
                     CoinList(coins: filteredCoins, showPortfolio: false)
                         .transition(.move(edge: .leading))
-                        .loading(coinListVM.isLoading)
-                        .task {
-                            guard let coins = await coinListVM.fetchCoins() else {
-                                isError = true
-                                return
-                            }
-                            stateController.allCoins = coins
-                        }
+                        .loading(stateController.isLoading)
                 }
             }
         }
@@ -80,6 +65,10 @@ struct HomeView: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text("An error happenned, try again later")
+        }
+        .task {
+            if Task.isCancelled { return }
+            await stateController.fetch()
         }
     }
     
