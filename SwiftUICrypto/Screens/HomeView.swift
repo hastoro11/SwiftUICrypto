@@ -30,13 +30,52 @@ struct HomeView: View {
                     .padding()
                 
                 HStack {
-                    Text("Coin")
+                    HStack(spacing: 2) {
+                        Text("Coin")
+                        Image(systemName: "triangle.fill")
+                            .font(.caption2)
+                            .rotationEffect(Angle(degrees: stateController.sortType == .rank ? 0 : 180))
+                            .opacity(stateController.sortType == .rank || stateController.sortType == .rankReversed ? 1 : 0)
+                    }
+                    .onTapGesture {
+                        withAnimation {
+                            stateController.changeSortType(to: stateController.sortType == .rank ? .rankReversed : .rank)
+                        }
+                    }
                     Spacer()
                     if showPortfolio {
-                        Text("Holdings")
+                        HStack(spacing: 2) {
+                            Text("Holdings")
+                            Image(systemName: "triangle.fill")
+                                .rotationEffect(Angle(degrees: stateController.sortType == .holdings ? 0 : 180))
+                                .opacity(stateController.sortType == .holdings || stateController.sortType == .holdingsReversed ? 1 : 0)
+                        }
+                        .onTapGesture {
+                            withAnimation {
+                                stateController.changeSortType(to: stateController.sortType == .holdings ? .holdingsReversed : .holdings)
+                            }
+                        }
                     }
-                    Text("Price")
-                        .frame(width: UIScreen.main.bounds.width / 3.5)
+                    HStack(spacing: 2) {
+                        Button(action: {
+                            Task {
+                                await stateController.fetch()
+                            }
+                        }) {
+                            Image(systemName: "arrow.counterclockwise")
+                        }
+                        Text("Price")
+                        Image(systemName: "triangle.fill")
+                            .font(.caption2)
+                            .rotationEffect(Angle(degrees: stateController.sortType == .price ? 0 : 180))
+                            .opacity(stateController.sortType == .price || stateController.sortType == .priceReversed ? 1 : 0)
+                    }
+                    .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
+                    .onTapGesture {
+                        withAnimation {
+                            stateController.changeSortType(to: stateController.sortType == .price ? .priceReversed : .price)
+                        }
+                    }
                 }
                 .font(.caption)
                 .foregroundColor(Color.Theme.secondaryText)
@@ -45,11 +84,6 @@ struct HomeView: View {
                 if showPortfolio {
                     CoinList(coins: stateController.portfolioCoins, showPortfolio: true)
                         .transition(.move(edge: .trailing))
-                        .task {
-                            print("in task")
-                            await stateController.fetch()
-                            stateController.fetchPortfolioCoins()
-                        }
                 }
                 if !showPortfolio {
                     CoinList(coins: filteredCoins, showPortfolio: false)
@@ -83,6 +117,10 @@ struct HomeView: View {
             }
         }
     }
+    
+    func update() async {
+        await stateController.fetch()
+    }
 }
 
 
@@ -90,9 +128,9 @@ struct HomeView: View {
 struct Previews_HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
-            .environmentObject(StateController())
+            .environmentObject(StateController.preview)
         HomeView()
-            .environmentObject(StateController())
+            .environmentObject(StateController.preview)
             .preferredColorScheme(.dark)
     }
 }

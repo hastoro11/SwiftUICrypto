@@ -8,6 +8,10 @@
 import SwiftUI
 
 class StateController: ObservableObject {
+    
+    enum SortType {
+        case rank, rankReversed, price, priceReversed, holdings, holdingsReversed
+    }
     @Published var allCoins: [Coin] = []
     @Published var portfolioCoins: [Coin] = []
     @Published var stats: [Statistic] = []
@@ -15,14 +19,49 @@ class StateController: ObservableObject {
     @Published var isLoading = false
     @Published var isErrorHappened = false
     
+    @Published var sortType: SortType = .holdings {
+        didSet {
+            sort()
+        }
+    }
+    
     var dataService: PortfolioDataService = PortfolioDataService()
 
     func update(coin: Coin, amount: Double) {
         dataService.updatePortfolio(coin: coin, amount: amount)
-        fetchPortfolioCoins()
+        Task {
+            await fetch()
+        }
     }
     
-    func fetchPortfolioCoins(){        
+    func changeSortType(to sortType: SortType) {
+        self.sortType = sortType
+    }
+    
+    func sort() {
+        switch sortType {
+            
+        case .rank:
+            allCoins = allCoins.sorted(by: {$0.rank < $1.rank})
+            portfolioCoins = portfolioCoins.sorted(by: {$0.rank < $1.rank})
+        case .rankReversed:
+            allCoins = allCoins.sorted(by: {$0.rank > $1.rank})
+            portfolioCoins = portfolioCoins.sorted(by: {$0.rank > $1.rank})
+        case .price:
+            allCoins = allCoins.sorted(by: {$0.currentPrice < $1.currentPrice})
+            portfolioCoins = portfolioCoins.sorted(by: {$0.currentPrice < $1.currentPrice})
+        case .priceReversed:
+            allCoins = allCoins.sorted(by: {$0.currentPrice > $1.currentPrice})
+            portfolioCoins = portfolioCoins.sorted(by: {$0.currentPrice > $1.currentPrice})
+        case .holdings:
+            portfolioCoins = portfolioCoins.sorted(by: {$0.currentHoldingsValue < $1.currentHoldingsValue})
+        case .holdingsReversed:
+            portfolioCoins = portfolioCoins.sorted(by: {$0.currentHoldingsValue > $1.currentHoldingsValue})
+        }
+        
+    }
+    
+    func fetchPortfolioCoins() -> [Coin]{
         let entities = dataService.fetchPortfolio()
         let portfolios = allCoins.compactMap { coin -> Coin? in
             if let entity = entities.first(where: {$0.coinID == coin.id}) {
@@ -30,7 +69,7 @@ class StateController: ObservableObject {
             }
             return nil
         }
-        portfolioCoins = portfolios
+        return portfolios
     }
     
     func fetchAmountFor(_ coin: Coin) -> Double {
@@ -57,6 +96,7 @@ class StateController: ObservableObject {
         }
         self.allCoins = coins
         self.stats = stats
+        self.portfolioCoins = fetchPortfolioCoins()
     }
     
     private func fetchMarketData() async -> [Statistic]? {
@@ -68,7 +108,7 @@ class StateController: ObservableObject {
         return Statistic.convertMarketData(marketData)
     }
     
-    private func fetchCoins() async -> [Coin]? {
+    func fetchCoins() async -> [Coin]? {
         let url = URL(string: "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=24h")!
         let coinRequest = CoinRequest(url)
         return await coinRequest.execute()
@@ -95,6 +135,16 @@ class StateController: ObservableObject {
         let percentageChange = ((currentVolume - previousVolume) / previousVolume) * 100
         
         return Statistic(title: "Portfolio Volume", value: currentVolume.currencyFormatted(digits:2), percentageChange: percentageChange)
+    }
+    
+    // MARK: - Preview
+    static var preview: StateController {
+        let ctrl = StateController()
+        ctrl.isLoading = false
+        ctrl.allCoins = TestData.coins
+        ctrl.stats = TestData.stats
+        ctrl.sortType = .price
+        return ctrl
     }
 }
 

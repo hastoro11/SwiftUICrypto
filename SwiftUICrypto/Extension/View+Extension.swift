@@ -25,3 +25,14 @@ extension View {
         self.modifier(Loading(isLoading: isLoading))
     }
 }
+
+
+
+struct Previews_View_Extension_Previews: PreviewProvider {
+    static var previews: some View {
+        Text("Hello, World!")
+            .padding()
+            .previewLayout(.sizeThatFits)
+            .loading(false)
+    }
+}
