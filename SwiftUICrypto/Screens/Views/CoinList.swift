@@ -10,14 +10,28 @@ import SwiftUI
 struct CoinList: View {
     var coins: [Coin]
     var showPortfolio: Bool
+    @State var showDetails: Bool = false
+    @State var selectedCoin: Coin?
     var body: some View {
-        List {
-            ForEach(coins) { coin in
-                CoinRow(coin: coin, showCurrentHoldings: showPortfolio)
+
+        ZStack {
+            NavigationLink(isActive: $showDetails) {
+                CoinDetails(coin: selectedCoin)
+            } label: {
+                EmptyView()
             }
-            .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
+            List {
+                ForEach(coins) { coin in
+                    CoinRow(coin: coin, showCurrentHoldings: showPortfolio)
+                        .onTapGesture {
+                            selectedCoin = coin
+                            showDetails.toggle()
+                        }
+                }
+                .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
+            }
+            .listStyle(.plain)
         }
-        .listStyle(.plain)
     }
 }
 

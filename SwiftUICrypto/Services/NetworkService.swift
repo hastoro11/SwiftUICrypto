@@ -122,3 +122,15 @@ struct MarketDataRequest: NetworkRequest {
   
 }
 
+struct CoinDetailRequest: NetworkRequest {
+    var url: URL
+    init(_ id: String) {
+        let urlString = "https://api.coingecko.com/api/v3/coins/\(id)?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false"
+        self.url = URL(string: urlString)!
+    }
+    
+    func decode(_ data: Data) -> CoinDetail? {
+        return try? JSONDecoder().decode(CoinDetail.self, from: data)
+    }
+}
+

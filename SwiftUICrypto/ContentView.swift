@@ -10,8 +10,11 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var stateController: StateController = StateController()
     var body: some View {
-        HomeView()
-            .environmentObject(stateController)
+        NavigationView {
+            HomeView()
+                .environmentObject(stateController)
+                .navigationBarHidden(true)
+        }
     }
 }
 

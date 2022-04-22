@@ -29,57 +29,7 @@ struct HomeView: View {
                 SearchBar(text: $search)
                     .padding()
                 
-                HStack {
-                    HStack(spacing: 2) {
-                        Text("Coin")
-                        Image(systemName: "triangle.fill")
-                            .font(.caption2)
-                            .rotationEffect(Angle(degrees: stateController.sortType == .rank ? 0 : 180))
-                            .opacity(stateController.sortType == .rank || stateController.sortType == .rankReversed ? 1 : 0)
-                    }
-                    .onTapGesture {
-                        withAnimation {
-                            stateController.changeSortType(to: stateController.sortType == .rank ? .rankReversed : .rank)
-                        }
-                    }
-                    Spacer()
-                    if showPortfolio {
-                        HStack(spacing: 2) {
-                            Text("Holdings")
-                            Image(systemName: "triangle.fill")
-                                .rotationEffect(Angle(degrees: stateController.sortType == .holdings ? 0 : 180))
-                                .opacity(stateController.sortType == .holdings || stateController.sortType == .holdingsReversed ? 1 : 0)
-                        }
-                        .onTapGesture {
-                            withAnimation {
-                                stateController.changeSortType(to: stateController.sortType == .holdings ? .holdingsReversed : .holdings)
-                            }
-                        }
-                    }
-                    HStack(spacing: 2) {
-                        Button(action: {
-                            Task {
-                                await stateController.fetch()
-                            }
-                        }) {
-                            Image(systemName: "arrow.counterclockwise")
-                        }
-                        Text("Price")
-                        Image(systemName: "triangle.fill")
-                            .font(.caption2)
-                            .rotationEffect(Angle(degrees: stateController.sortType == .price ? 0 : 180))
-                            .opacity(stateController.sortType == .price || stateController.sortType == .priceReversed ? 1 : 0)
-                    }
-                    .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
-                    .onTapGesture {
-                        withAnimation {
-                            stateController.changeSortType(to: stateController.sortType == .price ? .priceReversed : .price)
-                        }
-                    }
-                }
-                .font(.caption)
-                .foregroundColor(Color.Theme.secondaryText)
-                .padding(.horizontal)
+                ListHeader(showPortfolio: showPortfolio)
                 
                 if showPortfolio {
                     CoinList(coins: stateController.portfolioCoins, showPortfolio: true)
@@ -123,7 +73,65 @@ struct HomeView: View {
     }
 }
 
-
+extension HomeView {
+    struct ListHeader: View {
+        @EnvironmentObject var stateController: StateController
+        var showPortfolio: Bool
+        var body: some View {
+            HStack {
+                HStack(spacing: 2) {
+                    Text("Coin")
+                    Image(systemName: "triangle.fill")
+                        .font(.caption2)
+                        .rotationEffect(Angle(degrees: stateController.sortType == .rank ? 0 : 180))
+                        .opacity(stateController.sortType == .rank || stateController.sortType == .rankReversed ? 1 : 0)
+                }
+                .onTapGesture {
+                    withAnimation {
+                        stateController.changeSortType(to: stateController.sortType == .rank ? .rankReversed : .rank)
+                    }
+                }
+                Spacer()
+                if showPortfolio {
+                    HStack(spacing: 2) {
+                        Text("Holdings")
+                        Image(systemName: "triangle.fill")
+                            .rotationEffect(Angle(degrees: stateController.sortType == .holdings ? 0 : 180))
+                            .opacity(stateController.sortType == .holdings || stateController.sortType == .holdingsReversed ? 1 : 0)
+                    }
+                    .onTapGesture {
+                        withAnimation {
+                            stateController.changeSortType(to: stateController.sortType == .holdings ? .holdingsReversed : .holdings)
+                        }
+                    }
+                }
+                HStack(spacing: 2) {
+                    Button(action: {
+                        Task {
+                            await stateController.fetch()
+                        }
+                    }) {
+                        Image(systemName: "arrow.counterclockwise")
+                    }
+                    Text("Price")
+                    Image(systemName: "triangle.fill")
+                        .font(.caption2)
+                        .rotationEffect(Angle(degrees: stateController.sortType == .price ? 0 : 180))
+                        .opacity(stateController.sortType == .price || stateController.sortType == .priceReversed ? 1 : 0)
+                }
+                .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
+                .onTapGesture {
+                    withAnimation {
+                        stateController.changeSortType(to: stateController.sortType == .price ? .priceReversed : .price)
+                    }
+                }
+            }
+            .font(.caption)
+            .foregroundColor(Color.Theme.secondaryText)
+            .padding(.horizontal)
+        }
+    }
+}
 
 struct Previews_HomeView_Previews: PreviewProvider {
     static var previews: some View {

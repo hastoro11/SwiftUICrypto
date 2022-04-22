@@ -97,6 +97,7 @@ class StateController: ObservableObject {
         self.allCoins = coins
         self.stats = stats
         self.portfolioCoins = fetchPortfolioCoins()
+        sort()
     }
     
     private func fetchMarketData() async -> [Statistic]? {
