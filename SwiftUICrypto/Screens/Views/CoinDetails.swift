@@ -21,11 +21,8 @@ struct CoinDetails: View {
 extension CoinDetails {
     struct Content: View {
         var coin: Coin
-        @StateObject var vm: CoinDetailsViewModel
-        init(coin: Coin) {
-            self.coin = coin
-            _vm = StateObject(wrappedValue: CoinDetailsViewModel(coin))
-        }
+        @StateObject var vm: CoinDetailsViewModel = CoinDetailsViewModel()
+        
         var body: some View {
             ScrollView {
                 VStack(alignment: .leading) {
@@ -57,7 +54,7 @@ extension CoinDetails {
                 .padding()
                 .navigationTitle(coin.name)
                 .task {
-                    await vm.fetch()
+                    await vm.fetch(coin: coin)
                 }
             }
         }

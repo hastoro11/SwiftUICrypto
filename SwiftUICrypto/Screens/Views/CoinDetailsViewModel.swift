@@ -9,20 +9,15 @@ import Foundation
 
 class CoinDetailsViewModel: ObservableObject {
     
-    @Published var coin: Coin
     @Published var overviewStats: [Statistic] = []
     @Published var additionalStats: [Statistic] = []
     
-    init(_ coin: Coin) {
-        self.coin = coin
-    }
-    
     @MainActor
-    func fetch() async {
+    func fetch(coin: Coin) async {
         let request = CoinDetailRequest(coin.id)
         let coinDetail = await request.execute() ?? CoinDetail.default
-        self.overviewStats = createOverviewStat(coin: self.coin)
-        self.additionalStats = createAdditionalStat(coin: self.coin, coinDetail: coinDetail)
+        self.overviewStats = createOverviewStat(coin: coin)
+        self.additionalStats = createAdditionalStat(coin: coin, coinDetail: coinDetail)
     }
     
     func createOverviewStat(coin: Coin) -> [Statistic] {
@@ -69,8 +64,8 @@ class CoinDetailsViewModel: ObservableObject {
     
     // MARK: - Preview
     static var preview: CoinDetailsViewModel {
-        let vm = CoinDetailsViewModel(TestData.coin(0))
-        vm.overviewStats = vm.createOverviewStat(coin: vm.coin)
+        let vm = CoinDetailsViewModel()
+        vm.overviewStats = vm.createOverviewStat(coin: TestData.coin(0))
         
         return vm
     }
