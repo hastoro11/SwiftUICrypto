@@ -25,9 +25,9 @@ extension CoinDetails {
         
         var body: some View {
             ScrollView {
-                VStack(alignment: .leading) {
-                    Text("")
-                        .frame(height: 150)
+                VStack(alignment: .leading) {                    
+                    ChartView(data: coin.sparklineIn7D?.price ?? [], updatedDate: coin.lastUpdated ?? "")
+                        .frame(height: 300)
                     
                     Text("Overview")
                         .font(.title.bold())

@@ -8,6 +8,18 @@
 import Foundation
 import SwiftUI
 
+// MARK: - Date
+extension Date {
+    static func shortFormatted(_ date: String, addedDays: Double = 0) -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        var date = isoFormatter.date(from: date) ?? Date()
+        date = date.addingTimeInterval(addedDays * 24 * 60 * 60)
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: date)
+    }
+}
+
 // MARK: - Color
 extension Color {
     struct Theme {
