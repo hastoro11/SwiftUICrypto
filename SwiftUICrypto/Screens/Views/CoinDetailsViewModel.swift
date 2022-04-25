@@ -11,6 +11,8 @@ class CoinDetailsViewModel: ObservableObject {
     
     @Published var overviewStats: [Statistic] = []
     @Published var additionalStats: [Statistic] = []
+    @Published var description: String?
+    @Published var homePageLink: String?
     
     @MainActor
     func fetch(coin: Coin) async {
@@ -18,6 +20,8 @@ class CoinDetailsViewModel: ObservableObject {
         let coinDetail = await request.execute() ?? CoinDetail.default
         self.overviewStats = createOverviewStat(coin: coin)
         self.additionalStats = createAdditionalStat(coin: coin, coinDetail: coinDetail)
+        self.description = coinDetail.description?.en.plainHtmlString
+        self.homePageLink = coinDetail.links.homepage?.first
     }
     
     func createOverviewStat(coin: Coin) -> [Statistic] {

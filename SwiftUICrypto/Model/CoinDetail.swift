@@ -17,7 +17,7 @@ struct CoinDetail: Codable {
     let id, symbol, name: String
     let blockTimeInMinutes: Int?
     let hashingAlgorithm: String?
-    let description: Description
+    let description: Description?
     let links: Links
 
     enum CodingKeys: String, CodingKey {

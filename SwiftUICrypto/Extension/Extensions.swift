@@ -8,6 +8,25 @@
 import Foundation
 import SwiftUI
 
+// MARK: - String
+extension String {
+    var htmlString: NSAttributedString? {
+        guard let htmlData = self.data(using: .unicode) else { return nil }
+        let options = [
+            NSAttributedString.DocumentReadingOptionKey.documentType:
+                NSAttributedString.DocumentType.html]
+        return try? NSAttributedString(data: htmlData, options: options, documentAttributes: nil)
+    }
+    
+    var plainHtmlString: String {
+        return htmlString?.string ?? ""
+    }
+    
+    var html: String {
+        self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+    }
+}
+
 // MARK: - Date
 extension Date {
     static func shortFormatted(_ date: String, addedDays: Double = 0) -> String {

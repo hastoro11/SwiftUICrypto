@@ -22,7 +22,7 @@ extension CoinDetails {
     struct Content: View {
         var coin: Coin
         @StateObject var vm: CoinDetailsViewModel = CoinDetailsViewModel()
-        
+        @State var showLongDescription = false
         var body: some View {
             ScrollView {
                 VStack(alignment: .leading) {                    
@@ -33,6 +33,24 @@ extension CoinDetails {
                         .font(.title.bold())
                         .foregroundColor(Color.accentColor)
                     Divider()
+                    
+                    if let desc = vm.description {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(desc)
+                                .lineLimit(showLongDescription ? nil : 5)
+                                .foregroundColor(Color.Theme.secondaryText)
+                                .font(.callout)
+                                .animation(showLongDescription ? .default : .none, value: showLongDescription)
+                            Button(action: {
+                                withAnimation {
+                                    showLongDescription.toggle()
+                                }
+                            }) {
+                                Text(showLongDescription ? "Read less" : "Read more")
+                            }
+                            .foregroundColor(Color.blue)
+                        }
+                    }
                     
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), alignment: .leading, spacing: 20, pinnedViews: []) {
                         ForEach(vm.overviewStats) { stat in
@@ -49,6 +67,12 @@ extension CoinDetails {
                         ForEach(vm.additionalStats) { stat in
                             StatisticCell(stat: stat)
                         }
+                    }
+                    Divider()
+                    
+                    if let homePageLink = vm.homePageLink, let homeUrl = URL(string: homePageLink) {
+                        Link("Homepage", destination: homeUrl)
+                            .foregroundColor(.blue)
                     }
                 }
                 .padding()
