@@ -9,12 +9,20 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var stateController: StateController = StateController()
+    @State var exitSplash = false
     var body: some View {
-        NavigationView {
-            HomeView()
-                .environmentObject(stateController)
-                .navigationBarHidden(true)
-        }
+//        ZStack {
+            NavigationView {
+                HomeView()
+                    .environmentObject(stateController)
+                    .navigationBarHidden(true)
+                    .overlay {
+                        if !exitSplash {
+                            SplashView(exit: $exitSplash)
+                                .transition(.scale)
+                        }
+                    }
+            }
     }
 }
 
